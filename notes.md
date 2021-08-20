@@ -9,3 +9,6 @@ JRNL CLIENT:
 7. console log dom loaded event listener 
 8. start connecting api to client
 
+STYLE: 
+
+Art Deco 
