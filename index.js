@@ -7,17 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
 function getEntries() {
     fetch(endPoint)
         .then(response => response.json())
-        .then(journalEntries => {
-            journalEntries.data.forEach(entry => {
-                const journalEntriesMarkup =
-                    `<div class="journal-entry">
-                    <div data-id=${entry.attributes.id}>
+        .then(entries => {
+            entries.data.forEach(entry => {
+                const dataMarkup =
+                    `<div data-id=${entry.id}>
                         <h3>${entry.attributes.name}</h3>
                         <h4>${entry.attributes.created_at}</h4>
                         <p>${entry.attributes.content}</p>
                     </div>
                 <br><br>`;
-                document.querySelector('#journal-entries-container').innerhtml += journalEntriesMarkup;
+                document.querySelector('#journal-entries-container').innerHTML+= dataMarkup;
             });
         });
 }
