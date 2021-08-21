@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     getEntries();
 });
+;
 
     //function that gets the entries from the api and renders them
     function getEntries() {
@@ -22,3 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
     }
+
+    //function that adds a new entry to the api
+   
+
+    // function that signs a user in by username then renders their entries
+    
