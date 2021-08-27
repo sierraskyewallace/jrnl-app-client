@@ -2,6 +2,10 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     getEntries()
+    const loginForm = document.querySelector('#username-form-container')
+    loginForm.addEventListener('submit', (e) => {
+        loginFormHandler(e)
+    })
     const createEntryForm = document.querySelector('#journal-entry-form-container');
     createEntryForm.addEventListener("submit", (event) => {
         createFormHandler(event)
@@ -44,14 +48,14 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(newEntry => {
                 console.log(newEntry);
-                const journalEntryMarkup = `
+                const newEntryMarkup = `
             <div data-id="${newEntry.id}">
-            <h3>${newEntry.attributes.name}</h3>
+            <h3>${newEntry.name}</h3>
             // add the date here
-            <p>${newEntry.attributes.content}</p>
+            <p>${newEntry.content}</p>
             </div>
             <br><br>`;
-                document.querySelector('#journal-entries-container').innerHTML += journalEntryMarkup;
+                document.querySelector('#journal-entries-container').innerHTML += newEntryMarkup;
             });
             
 
@@ -60,3 +64,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // function that signs a user in by username then renders their entries
 }});
+
