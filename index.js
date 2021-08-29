@@ -1,15 +1,15 @@
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    getEntries()
     const loginForm = document.querySelector('#username-form-container')
     loginForm.addEventListener('submit', (e) => {
         loginFormHandler(e)
     })
     const createEntryForm = document.querySelector('#journal-entry-form-container');
     createEntryForm.addEventListener("submit", (event) => {
-        createFormHandler(event)
+        createFormHandler(event);
     });
+    getEntries();
 
     //function that gets the entries from the api and renders them
     function getEntries() {
@@ -60,8 +60,29 @@ document.addEventListener('DOMContentLoaded', () => {
             
 
 
-    
-
-        // function that signs a user in by username then renders their entries
-}});
+        function loginFormHandler(event) {
+            event.preventDefault();
+            const username = document.querySelector('#username').value;
+            const password = document.querySelector('#password').value;
+            const user = {
+                username: username,
+                password: password
+            };
+            fetch("http://localhost:3000/api/v1/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(user)
+            }
+                .then(response => response.json())
+                .then(user => {
+                    console.log(user);
+                    
+                    document.querySelector('#user-container').innerHTML += userMarkup;
+                })
+            );
+        }
+    }
+});
 
