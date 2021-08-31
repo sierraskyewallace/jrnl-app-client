@@ -1,7 +1,7 @@
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.querySelector('#username-form-container')
+    const loginForm = document.querySelector('#user-login-form-container');
     loginForm.addEventListener('submit', (e) => {
         loginFormHandler(e)
     })
@@ -60,29 +60,35 @@ document.addEventListener('DOMContentLoaded', () => {
             
 
 
-        function loginFormHandler(event) {
-            event.preventDefault();
-            const username = document.querySelector('#username').value;
-            const password = document.querySelector('#password').value;
-            const user = {
-                username: username,
-                password: password
-            };
-            fetch("http://localhost:3000/api/v1/users", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(user)
-            }
-                .then(response => response.json())
-                .then(user => {
-                    console.log(user);
-                    
-                    document.querySelector('#user-container').innerHTML += userMarkup;
-                })
-            );
-        }
     }
 });
 
+function loginFormHandler(event) {
+    event.preventDefault();
+    const username = document.querySelector('#input-username').value;
+    const password = document.querySelector('#input-password').value;
+    loginFetch(username, password);
+}
+
+function loginFetch(username, password) {
+    const formData = {
+        user: {
+            username: username,
+            password: password
+        }
+    }
+    fetch("http://localhost:3000/api/v1/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+    })
+        .then(response => response.json())
+        .then(user => {
+            console.log(user);
+            localStorage.setItem("token", user.token);
+            window.location.href = "./index.html";
+        }
+        )
+}
