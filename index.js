@@ -87,8 +87,35 @@ function loginFetch(username, password) {
         .then(response => response.json())
         .then(user => {
             console.log(user);
-            localStorage.setItem("token", user.token);
-            window.location.href = "./index.html";
+            localStorage.setItem('jwt_toke', user.jwt);
+            renderUser();
         }
         )
+}
+
+function renderUser() {
+    console.log(localStorage.getItem('jwt_token'));
+    fetch("http://localhost:3000/api/v1/profile", {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('jwt_token')}`
+        }
+    })
+        .then(response => response.json())
+        .then(user => {
+            console.log(user);
+            document.querySelector('#user-profile-container').innerHTML = `
+            <h2>Welcome ${user.data.attributes.username}</h2>
+            <button id="logout-button">Logout</button>
+            `;
+            document.querySelector('#logout-button').addEventListener('click', () => {
+                logout();
+            })
+        }
+    )
+}
+
+function logoutUser() {
+    localStorage.removeItem('jwt_token');
+    renderUser();
 }
