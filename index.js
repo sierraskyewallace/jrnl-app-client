@@ -1,7 +1,7 @@
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.querySelector('#user-login-form-container');
+    const loginForm = document.querySelector('#login-form');
     loginForm.addEventListener('submit', (e) => {
         loginFormHandler(e)
     })
@@ -64,88 +64,28 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loginFormHandler(e) {
-    event.preventDefault();
-    const username = e.target.querySelector('#input-username').value;
-    const password = e.target.querySelector('#input-password').value;
-    loginFetch(username, password);
+  e.preventDefault()
+  const username = e.target.querySelector("#username").value
+  const password = e.target.querySelector("#password").value
+  loginFetch(username, password)
 }
 
 function loginFetch(username, password) {
-    const formData = {
-        user: {
-            username: username,
-            password: password
-        }
-    }
-    fetch("http://localhost:3000/api/v1/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-    })
-        .then(response => response.json())
-        .then(user => {
-            console.log(user);
-            localStorage.setItem('jwt_toke', user.jwt);
-            setUser();
-        }
-        )
+  const formData = {user: { username, password} }
+
+  fetch("http://localhost:3000/api/v1/login", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(formData)
+  })
+  .then(response => response.json())
+  .then(json => {
+    localStorage.setItem('jwt_token', json.jwt)
+    renderUser()
+  })
 }
 
-function setUser() {
-    console.log(localStorage.getItem('jwt_token'));
-    fetch("http://localhost:3000/api/v1/profile", {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('jwt_token')}`
-        }
-    })
-        .then(response => response.json())
-        .then(user => {
-            console.log(user);
-            document.querySelector('#user-profile-container').innerHTML = `
-            <h2>Welcome ${user.data.attributes.username}</h2>
-            <button id="logout-button">Logout</button>
-            `;
-            document.querySelector('#logout-button').addEventListener('click', () => {
-                logoutUser();
-            })
-        }
-    )
-}
-
-function logoutUser() {
-    localStorage.removeItem('jwt_token');
-    renderUser();
-}
-
-function signUpFormHandler(e) {
-    e.preventDefault();
-    const username = e.target.querySelector('#input-username').value;
-    const password = e.target.querySelector('#input-password').value;
-    signUpFetch(username, password);
-}
-function signUpFetch(username, password) {
-    const formData = {
-        user: {
-            username: username,
-            password: password
-        }
-    }
-    fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-    })
-        .then(response => response.json())
-        .then(user => {
-            console.log(user);
-            localStorage.setItem('jwt_token', user.jwt);
-            setUser();
-        }
-        )
+function renderUser() {
+  console.log(localStorage.getItem('jwt_token'));
 }
 
