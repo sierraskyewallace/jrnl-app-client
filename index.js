@@ -63,10 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function loginFormHandler(event) {
+function loginFormHandler(e) {
     event.preventDefault();
-    const username = document.querySelector('#input-username').value;
-    const password = document.querySelector('#input-password').value;
+    const username = e.target.querySelector('#input-username').value;
+    const password = e.target.querySelector('#input-password').value;
     loginFetch(username, password);
 }
 
@@ -88,12 +88,12 @@ function loginFetch(username, password) {
         .then(user => {
             console.log(user);
             localStorage.setItem('jwt_toke', user.jwt);
-            renderUser();
+            setUser();
         }
         )
 }
 
-function renderUser() {
+function setUser() {
     console.log(localStorage.getItem('jwt_token'));
     fetch("http://localhost:3000/api/v1/profile", {
         method: "GET",
@@ -109,7 +109,7 @@ function renderUser() {
             <button id="logout-button">Logout</button>
             `;
             document.querySelector('#logout-button').addEventListener('click', () => {
-                logout();
+                logoutUser();
             })
         }
     )
@@ -119,3 +119,33 @@ function logoutUser() {
     localStorage.removeItem('jwt_token');
     renderUser();
 }
+
+function signUpFormHandler(e) {
+    e.preventDefault();
+    const username = e.target.querySelector('#input-username').value;
+    const password = e.target.querySelector('#input-password').value;
+    signUpFetch(username, password);
+}
+function signUpFetch(username, password) {
+    const formData = {
+        user: {
+            username: username,
+            password: password
+        }
+    }
+    fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+    })
+        .then(response => response.json())
+        .then(user => {
+            console.log(user);
+            localStorage.setItem('jwt_token', user.jwt);
+            setUser();
+        }
+        )
+}
+
