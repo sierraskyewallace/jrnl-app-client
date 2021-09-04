@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //function that gets the entries from the api and renders them
     function getEntries() {
-        fetch("http://localhost:3000/api/v1/journal_entries")
+        fetch('http://localhost:3000/api/v1/journal_entries')
             .then(response => response.json())
             .then(entries => {
                 console.log(entries);
