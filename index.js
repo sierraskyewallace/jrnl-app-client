@@ -6,12 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     loginForm.addEventListener('submit', (e) => {
         loginFormHandler(e)
     })
-    const signUpForm = document.querySelector('#sign-up-form');
-    signUpForm.addEventListener('submit', (e) => {
-        signUpFormHandler(e)
-    })
 
-    const createEntryForm = document.querySelector('#journal-entry-form-container');
+
+    const createEntryForm = document.querySelector('#journal-entry-form');
     createEntryForm.addEventListener("submit", (event) => {
         createFormHandler(event);
     });
@@ -30,13 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(entries => {
                 console.log(entries);
                 entries.data.forEach(journalEntry => {
-                    const journalEntryMarkup = `
-                    <div class="journal-entries-container">
-                    <h3>${journalEntry.attributes.name}</h3>
-                    <p>${journalEntry.attributes.content}</p>
-                    <br><br>;`
+                    let newEntry = new JournalEntry(journalEntry, journalEntry.attributes);
 
                     document.querySelector('#journal-entries-container').innerHTML += journalEntryMarkup;
+                    newEntry.renderEntry();
                 });
             });
     }
@@ -101,28 +95,4 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(localStorage.getItem('jwt_token'));
     
     }
-
-    function signUpFormHandler(e) {
-        e.preventDefault()
-        const username = e.target.querySelector("#username").value
-        const password = e.target.querySelector("#password").value
-        signUpFetch(username, password)
-    }
-
-    function signUpFetch(username, password) {
-        const formData = { user: { username, password } }
-
-        fetch('http://localhost:3000/api/v1/users', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData)
-        })
-            .then(response => response.json())
-            .then(json => {
-                localStorage.setItem('jwt_token', json.jwt)
-                renderUser()
-            })
-    }
-
-
-})
+});
