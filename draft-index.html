@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <script type="text/javascript"src="user.js"></script>
+    <script type="text/javascript"src="journal_entry.js"></script>
+    <script type="text/javascript"src="index.js"></script>
+    
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand">JRNL</a>
+    <form class="d-flex">
+      <button id="login-button"class="btn btn-outline-success" type="submit">Sign Up</button> |
+      <button id="sign-up-button"class="btn btn-outline-success" type="submit">Sign In</button>
+    </form>
+  </div>
+</nav>
+
+
+    <div id="user-profile-container">
+        </div>
+        <form id="sign-up-form">
+            <h3>Sign up</h3>
+           <input type="text" id="username" name="username" placeholder="Username"> 
+           <input type="password" id="password"name="password" placeholder="Password">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          <br>
+    <form id="login-form">
+              <h3>sign in</h3> 
+           <input type="text" id="username" name="username" placeholder="Username">
+           <input type="password" id="password"name="password" placeholder="Password">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    <form id="journal-entry-form-container">
+        <h4>New Entry</h4>
+        <input id="input-name" type="text" name="title" value=""
+        placeholder="Title" class="input-text"required>
+        <br><br>
+        <textarea id='input-content' rows="13" cols="60" name="content" placeholder="What's up?"></textarea>
+        <br><br>
+        <input id='create-button' type="submit" value="Create" class="button">
+    </form>
+
+<br><br>
+
+    <div id="journal-entries-container">
+        </div>
+
+
+
+</div>
+</div>
+</body>
+</html>
