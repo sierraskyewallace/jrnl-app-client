@@ -16,8 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
         createFormHandler(event);
     });
 
-        getEntries();
+    getEntries();
     
+
 
     //function that gets the entries from the api and renders them
     function getEntries() {
@@ -68,56 +69,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     }
-});
+    ;
 
-function loginFormHandler(e) {
-  e.preventDefault()
-  const username = e.target.querySelector("#username").value
-  const password = e.target.querySelector("#password").value
-  loginFetch(username, password)
-}
+    function loginFormHandler(e) {
+        e.preventDefault()
+        const username = e.target.querySelector("#username").value
+        const password = e.target.querySelector("#password").value
+        loginFetch(username, password)
+    }
 
-function loginFetch(username, password) {
-  const formData = {user: { username, password} }
+    function loginFetch(username, password) {
+        const formData = { user: { username, password } }
 
-  fetch('http://localhost:3000/api/v1/login', {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(formData)
-  })
-  .then(response => response.json())
-      .then(json => {
-          localStorage.setItem('jwt_token', json.jwt)
-          renderUser()
-      })
-}
-
-
-function renderUser() {
-    console.log(localStorage.getItem('jwt_token'));
-    
-}
-
-function signUpFormHandler(e) {
-    e.preventDefault()
-    const username = e.target.querySelector("#username").value
-    const password = e.target.querySelector("#password").value
-    signUpFetch(username, password)
-}
-
-function signUpFetch(username, password) {
-    const formData = {user: { username, password} }
-
-    fetch('http://localhost:3000/api/v1/users', {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-        .then(json => {
-            localStorage.setItem('jwt_token', json.jwt)
-            renderUser()
+        fetch('http://localhost:3000/api/v1/login', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
         })
-}
+            .then(response => response.json())
+            .then(json => {
+                localStorage.setItem('jwt_token', json.jwt)
+                renderUser()
+            })
+    }
 
 
+    function renderUser() {
+        console.log(localStorage.getItem('jwt_token'));
+    
+    }
+
+    function signUpFormHandler(e) {
+        e.preventDefault()
+        const username = e.target.querySelector("#username").value
+        const password = e.target.querySelector("#password").value
+        signUpFetch(username, password)
+    }
+
+    function signUpFetch(username, password) {
+        const formData = { user: { username, password } }
+
+        fetch('http://localhost:3000/api/v1/users', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(json => {
+                localStorage.setItem('jwt_token', json.jwt)
+                renderUser()
+            })
+    }
+
+
+})
