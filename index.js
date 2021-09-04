@@ -1,30 +1,37 @@
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    
     const loginForm = document.querySelector('#login-form');
     loginForm.addEventListener('submit', (e) => {
         loginFormHandler(e)
     })
+    const signUpForm = document.querySelector('#sign-up-form');
+    signUpForm.addEventListener('submit', (e) => {
+        signUpFormHandler(e)
+    })
+
     const createEntryForm = document.querySelector('#journal-entry-form-container');
     createEntryForm.addEventListener("submit", (event) => {
         createFormHandler(event);
     });
-    getEntries();
+
+        getEntries();
+    
 
     //function that gets the entries from the api and renders them
     function getEntries() {
-        fetch("http://localhost:3000/api/v1/journal_entries")
+        fetch('http://localhost:3000/api/v1/journal_entries')
             .then(response => response.json())
             .then(entries => {
                 console.log(entries);
                 entries.data.forEach(journalEntry => {
                     const journalEntryMarkup = `
-                <div data-id="${journalEntry.id}">
-                <h3>${journalEntry.attributes.name}</h3>
-                // add the date here
-                <p>${journalEntry.attributes.content}</p>
-                </div>
-                <br><br>`;
+                    <div class="journal-entries-container">
+                    <h3>${journalEntry.attributes.name}</h3>
+                    <p>${journalEntry.attributes.content}</p>
+                    <br><br>;`
+
                     document.querySelector('#journal-entries-container').innerHTML += journalEntryMarkup;
                 });
             });
@@ -38,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: name,
             content: content,
         };
-        fetch("http://localhost:3000/api/v1/journal_entries", {
+        fetch('http://localhost:3000/api/v1/journal_entries', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -73,19 +80,44 @@ function loginFormHandler(e) {
 function loginFetch(username, password) {
   const formData = {user: { username, password} }
 
-  fetch("http://localhost:3000/api/v1/login", {
+  fetch('http://localhost:3000/api/v1/login', {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(formData)
   })
   .then(response => response.json())
-  .then(json => {
-    localStorage.setItem('jwt_token', json.jwt)
-    renderUser()
-  })
+      .then(json => {
+          localStorage.setItem('jwt_token', json.jwt)
+          renderUser()
+      })
 }
 
+
 function renderUser() {
-  console.log(localStorage.getItem('jwt_token'));
+    console.log(localStorage.getItem('jwt_token'));
+    
 }
+
+function signUpFormHandler(e) {
+    e.preventDefault()
+    const username = e.target.querySelector("#username").value
+    const password = e.target.querySelector("#password").value
+    signUpFetch(username, password)
+}
+
+function signUpFetch(username, password) {
+    const formData = {user: { username, password} }
+
+    fetch('http://localhost:3000/api/v1/users', {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+        .then(json => {
+            localStorage.setItem('jwt_token', json.jwt)
+            renderUser()
+        })
+}
+
 
