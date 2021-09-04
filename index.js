@@ -2,6 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     
+    getEntries();
+
     const loginForm = document.querySelector('#login-form');
     loginForm.addEventListener('submit', (e) => {
         loginFormHandler(e)
@@ -13,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         createFormHandler(event);
     });
 
-    getEntries();
+    
     
 
 
@@ -22,51 +24,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //function that gets the entries from the api and renders them
     function getEntries() {
-        fetch('http://localhost:3000/api/v1/journal_entries')
+        fetch("http://localhost:3000/api/v1/journal_entries")
             .then(response => response.json())
             .then(entries => {
                 console.log(entries);
                 entries.data.forEach(journalEntry => {
+
                     let newEntry = new JournalEntry(journalEntry, journalEntry.attributes);
 
-                    document.querySelector('#journal-entries-container').innerHTML += journalEntryMarkup;
-                    newEntry.renderEntry();
+                    document.querySelector('#journal-entries-container').innerHTML += newEntry.renderEntry();
+
                 });
             });
     }
 
-    function createFormHandler(event) {
-        event.preventDefault();
-        const name = document.querySelector('#input-name').value;
-        const content = document.querySelector('#input-content').value;
-        const newEntry = {
-            name: name,
-            content: content,
-        };
-        fetch('http://localhost:3000/api/v1/journal_entries', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newEntry)
-        })
-            .then(response => response.json())
-            .then(newEntry => {
-                console.log(newEntry);
-                const newEntryMarkup = `
-            <div data-id="${newEntry.id}">
-            <h3>${newEntry.name}</h3>
-            // add the date here
-            <p>${newEntry.content}</p>
-            </div>
-            <br><br>`;
-                document.querySelector('#journal-entries-container').innerHTML += newEntryMarkup;
-            });
-            
+     function createFormHandler(e) {
+         e.preventDefault()
+         const nameInput = document.querySelector('#input-name').value;
+         const contentInput = document.querySelector('#input-content').value;
 
+         
+  postFetch(nameInput, contentInput)
+}
 
-    }
-    ;
+function postFetch(name, content) {
+  // build my body object outside of my fetch
+  const formData = {name, content}
+
+  fetch('http://localhost:3000/spi/v1/journal_entries', {
+    // POST request
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(formData)
+  })
+  .then(response => response.json())
+  .then(entry => {
+    console.log(entry);
+    const entryData = entry.data
+    // render JSON response
+    let newEntry = new JournalEntry(entryData, entryData.attributes)
+    document.querySelector('#journal-entry-form').innerHTML += newEntry.renderEntry()
+  })
+
+}
 
     function loginFormHandler(e) {
         e.preventDefault()
