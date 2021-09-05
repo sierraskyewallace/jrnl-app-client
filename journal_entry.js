@@ -3,7 +3,7 @@ class JournalEntry {
         this.id = journalEntryAttributes.id;
         this.name = journalEntryAttributes.name;
         this.content = journalEntryAttributes.content;
-        this.userId = journalEntryAttributes.user_id;
+        this.user_id = journalEntryAttributes.user_id;
         JournalEntry.all.push(this)
         console.log(this);
     }
