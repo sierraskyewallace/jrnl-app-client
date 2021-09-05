@@ -1,3 +1,5 @@
+
+
 class JournalEntry {
     constructor(journalEntry, journalEntryAttributes) {
         this.id = journalEntryAttributes.id;
@@ -8,22 +10,25 @@ class JournalEntry {
         console.log(this);
     }
 
+    
     renderEntry() {
-
         return `
-      <div class="col-md-4">
-        
-            <h5 class="card-title">${this.name}</h5>
-            <p class="card-text">${this.content}</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-              
-          </div>
-        </div>
+        <div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        ${this.name}
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <p>${this.content}</p>
       </div>
-    `
+    </div>
+  </div>
+  
+ 
+    `;
     }
 }
 

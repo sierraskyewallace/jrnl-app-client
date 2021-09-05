@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     let newEntry = new JournalEntry(journalEntry, journalEntry.attributes);
 
                     document.querySelector('#journal-entries-container').innerHTML += newEntry.renderEntry();
-
+       
                 });
             });
     }
