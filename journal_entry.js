@@ -13,6 +13,7 @@ class JournalEntry {
     
     renderEntry() {
         return `
+      
         <div class="accordion" id="accordionExample">
   <div class="accordion-item">
     <h2 class="accordion-header" id="headingOne">
@@ -24,10 +25,9 @@ class JournalEntry {
       <div class="accordion-body">
         <p>${this.content}</p>
       </div>
-    </div>
   </div>
-  
- 
+</div>
+</div>
     `;
     }
 }
