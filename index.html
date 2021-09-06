@@ -10,7 +10,7 @@
 
     
     
-    
+    <script type="text/javascript" src="user.js"></script>
     <script type="text/javascript" src="journal_entry.js"></script>
     <script type="text/javascript" src="index.js"></script>
 
@@ -56,7 +56,8 @@
               <h5 class="text-white">Password</h5>
               <input type="password" class="form-control" id="input-password">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button><br>
+            <button type="button" id="logout-button"class="btn btn-primary">Logout</button>
           </form>
         </div>
       </div>
@@ -70,16 +71,17 @@
         <img src="https://www.iconsdb.com/icons/preview/white/pencil-2-xxl.png" width="20" height="20" alt="">
         <strong>JRNL</strong>
       </a>
+      
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
     </div>
   </div>
-
+<div class="user-div"id="user-div"></div>
 </header>
 
 <main>
-
+<div class="container"id="user-profile"></div>
   <section class="py-5 text-center container">
       <div class="container">
     <form id="journal-entry-form"class="row g-3 needs-validation"novalidate>
