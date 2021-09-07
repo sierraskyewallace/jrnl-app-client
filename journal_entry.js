@@ -1,11 +1,11 @@
 
 
 class JournalEntry {
-    constructor(journalEntry, journalEntryAttributes) {
-        this.id = journalEntryAttributes.id;
-        this.name = journalEntryAttributes.name;
-        this.content = journalEntryAttributes.content;
-        this.user_id = journalEntryAttributes.user_id;
+    constructor(id, name, content, user_id) {
+        this.id = id;
+        this.name = name;
+        this.content = content;
+        this.user_id = user_id;
         JournalEntry.all.push(this)
         console.log(this);
     }

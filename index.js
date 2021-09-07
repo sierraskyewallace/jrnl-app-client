@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // build my body object outside of my fetch
         const formData = { name, content }
 
-        fetch('http://localhost:3000/spi/v1/journal_entries', {
+        fetch('http://localhost:3000/api/v1/journal_entries', {
             // POST request
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -75,9 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(entry => {
                 console.log(entry);
-                const entryData = entry.data
-                // render JSON response
-                let newEntry = new JournalEntry(entryData, entryData.attributes)
+                let newEntry = new JournalEntry(entry, entry.attributes);
                 document.querySelector('#journal-entry-form').innerHTML += newEntry.renderEntry()
             })
     }
