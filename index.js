@@ -1,6 +1,6 @@
-
+let currentUser;
 document.addEventListener('DOMContentLoaded', () => {
-    let currentUser;
+    
 
     const signupForm = document.querySelector('#signup-form')
     signupForm.addEventListener('submit', function(e){
@@ -114,7 +114,7 @@ function signupFormHandler(e) {
             function loggedInUser(obj) {
                 currentUser = obj
                 signupForm.style.display = 'none'
-                welcome.innerHTML = `<h3>Welcome, <i>${currentUser.username}</i> !</h3>`
+                welcome.innerHTML = `<h3>Welcome, <i>${currentUser.data.attributes.username}</i> !</h3>`
             }
              getEntries();
         })
