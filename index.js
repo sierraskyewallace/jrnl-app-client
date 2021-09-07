@@ -1,19 +1,12 @@
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
-    
-    const signInButton = document.getElementById('sign-in-button');
-    
-    signInButton.addEventListener('click', (event) => {
-        signInFormHandler(event);
-    });
+    let currentUser;
 
-    const signUpButton = document.getElementById('sign-up-button');
-    signUpButton.addEventListener('click', (event) => {
-        signUpFormHandler(event);
+    const signupForm = document.querySelector('#signup-form')
+    signupForm.addEventListener('submit', function(e){
+        signupFormHandler(e);
     });
-
+   
 
     const createEntryForm = document.querySelector('#journal-entry-form');
     createEntryForm.addEventListener("submit", (event) => {
@@ -28,30 +21,37 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutUser(e);
     });
 
-    
-    
-    
+    function logoutUser(e) {
+        e.preventDefault();
+        fetch('http://localhost:3000/api/v1/logout', {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            credentials: "include"
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === "Successfully logged out") {
+                window.location.href = "http://localhost:3000/";
+            }
+        })
+    }
+    if (currentUser) {
+        logoutButton.style.display = 'block'
+    } else {
+        logoutButton.style.display = 'none'
+    }
+
+
 
     function logoutUser(e) {
         e.preventDefault()
         localStorage.clear();
         window.location.href = "index.html";
     }
-    //function that gets the entries from the api and renders them
-    function getEntries() {
-        fetch(`http://localhost:3000/api/v1/users/${this.id}/journal_entries`)
-            .then(response => response.json())
-            .then(entries => {
-                console.log(entries);
-                entries.data.forEach(journalEntry => {
-
-                    let newEntry = new JournalEntry(journalEntry, journalEntry.attributes);
-
-                    document.querySelector('#journal-entries-container').innerHTML += newEntry.renderEntry();
-       
-                });
-            });
-    }
+    
 
     function createFormHandler(e) {
         e.preventDefault()
@@ -80,14 +80,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 let newEntry = new JournalEntry(entryData, entryData.attributes)
                 document.querySelector('#journal-entry-form').innerHTML += newEntry.renderEntry()
             })
-
-
-    
-
-
     }
     
 
     ;
 }
 )
+function signupFormHandler(e) {
+    e.preventDefault()
+    const signupForm = document.querySelector('#signup-form');
+    fetch("http://localhost:3000/api/v1/users", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify({
+            user: {
+                username: document.querySelector('#signup-username').value,
+                password: document.querySelector('#signup-password').value
+            }
+        })
+    })
+        .then(res => res.json())
+        .then(function (obj) {
+            if (obj.message) {
+                alert(obj.message)
+            }
+            else {
+                loggedInUser(obj)
+            }
+
+            function loggedInUser(obj) {
+                currentUser = obj
+                signupForm.style.display = 'none'
+                welcome.innerHTML = `<h3>Welcome, <i>${currentUser.username}</i> !</h3>`
+            }
+             getEntries();
+        })
+    function getEntries() {
+        fetch("http://localhost:3000/api/v1/journal_entries")
+            .then(response => response.json())
+            .then(entries => {
+                console.log(entries);
+                entries.data.forEach(journalEntry => {
+
+                    let newEntry = new JournalEntry(journalEntry, journalEntry.attributes);
+
+                    document.querySelector('#journal-entries-container').innerHTML += newEntry.renderEntry();
+       
+                });
+            });
+    }
+}

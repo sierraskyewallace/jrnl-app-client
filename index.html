@@ -46,24 +46,20 @@
           <p class="text-muted">JRNL is a journaling application that you can use to easily jot down some ideas or practice some self-care.</p>
         </div>
         <div class="col-sm-4 offset-md-1 py-4">
-           <form id="login-form">
-            <div class="form-group">
-              <h5 class="text-white">Username</h5>
-              <input type="username" class="form-control" id="input-username">
-              
-            </div>
-            <div class="form-group">
-              <h5 class="text-white">Password</h5>
-              <input type="password" class="form-control" id="input-password">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button><br>
-            <button type="button" id="logout-button"class="btn btn-primary">Logout</button>
-          </form>
+            <div id="signup-form">
+           <form>
+               <input type="text" name="username" placeholder="Username" id="signup-username">
+               <br><br>
+               <input type="password" name="password" placeholder="Password" id="signup-password">
+               <br><br>
+               <input type="submit" name="submit" value="Submit" class="btn btn-primary">
+       </form><br><br>
+       <button id="logout-button"type="button" class="btn btn-danger">Logout</button>
+    </div>
         </div>
       </div>
     </div>
   </div>
-
 
   <div class="navbar navbar-dark" style="background-color: #121e25;">
     <div class="container">
@@ -77,11 +73,12 @@
       </button>
     </div>
   </div>
-<div class="user-div"id="user-div"></div>
+<div id="welcome">
+    </div>
 </header>
 
 <main>
-<div class="container"id="user-profile"></div>
+
   <section class="py-5 text-center container">
       <div class="container">
     <form id="journal-entry-form"class="row g-3 needs-validation"novalidate>
