@@ -3,7 +3,16 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     
-  
+    const signInButton = document.getElementById('sign-in-button');
+    
+    signInButton.addEventListener('click', (event) => {
+        signInFormHandler(event);
+    });
+
+    const signUpButton = document.getElementById('sign-up-button');
+    signUpButton.addEventListener('click', (event) => {
+        signUpFormHandler(event);
+    });
 
 
     const createEntryForm = document.querySelector('#journal-entry-form');
