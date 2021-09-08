@@ -1,17 +1,17 @@
 
 
 class JournalEntry {
-    constructor(id, name, content, user_id) {
-        this.id = id;
-        this.name = name;
-        this.content = content;
-        this.user_id = user_id;
+    constructor(entry, entryAttributes) {
+        this.id = entryAttributes.id;
+        this.name = entryAttributes.name;
+        this.content = entryAttributes.content;
+        this.user_id = entryAttributes.user_id;
         JournalEntry.all.push(this)
         console.log(this);
     }
 
-    
-    renderEntry() {
+
+renderEntry() {
         return `
       
         <div class="accordion" id="accordionExample">
