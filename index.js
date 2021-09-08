@@ -1,4 +1,5 @@
 let currentUser;
+
 document.addEventListener('DOMContentLoaded', () => {
     
 
@@ -21,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
+        
     function createFormHandler(e) {
         e.preventDefault()
         const nameInput = document.querySelector('#input-name').value;
@@ -40,51 +42,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log(entry);
                 let newEntry = new JournalEntry(entry, entry.data.attributes);
                 document.querySelector('#journal-entry-form').innerHTML += newEntry.renderEntry()
-            })
-    };
-})
-
-
-function signupFormHandler(e) {
-    e.preventDefault()
-    const signupForm = document.querySelector('#signup-form');
-    fetch("http://localhost:3000/api/v1/users", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-        },
-        body: JSON.stringify({
-            user: {
-                username: document.querySelector('#signup-username').value,
-                password: document.querySelector('#signup-password').value
-            }
-        })
-            .then(res => res.json())
-            .then(function (obj) {
-                if (obj.message) {
-                    alert(obj.message)
-                }
-                else {
-                    loggedInUser(obj)
-                }
-                
-    
-                function getEntries() {
-                    fetch("http://localhost:3000/api/v1/journal_entries")
-                        .then(response => response.json())
-                        .then(entries => {
-                            console.log(entries);
-                            entries.data.forEach(journalEntry => {
-
-                                let newEntry = new JournalEntry(journalEntry, journalEntry.attributes);
-
-                                document.querySelector('#journal-entries-container').innerHTML += newEntry.renderEntry();
-       
-                            });
-                        });
-                }
             }
             )
+    };
+
+
+    function signupFormHandler(e) {
+        e.preventDefault()
+        fetch("http://localhost:3000/api/v1/users", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: JSON.stringify({
+                user: {
+                    username: document.querySelector('#signup-username').value,
+                    password: document.querySelector('#signup-password').value
+                 }
+        })
     })
+    .then(res => res.json())
+    .then(function(object){
+        if (object.message) {
+            alert(object.message)
+        }
+        else {
+        loggedInUser(object)
+        }
+    }
+    )
 }
+        function getEntries() {
+            fetch("http://localhost:3000/api/v1/journal_entries")
+                .then(response => response.json())
+                .then(entries => {
+                    console.log(entries);
+                    entries.data.forEach(journalEntry => {
+
+                        let newEntry = new JournalEntry(journalEntry, journalEntry.attributes);
+
+                        document.querySelector('#journal-entries-container').innerHTML += newEntry.renderEntry();
+       
+                    }
+                    )
+                })
+        }
+    }
+);
