@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 function loggedInUser(obj) {
                     currentUser = obj
+                    welcome.innerHTML = `Welcome, ${obj.username}.`
                     signupForm.style.display = 'none'
-                    welcome.innerHTML = `Welcome ${currentUser.username}`
                     getEntries();
                 };
             
