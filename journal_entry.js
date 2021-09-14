@@ -14,32 +14,14 @@ class JournalEntry {
 renderEntry() {
         return `
       
-        <div class="accordion" id="accordionExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="headingOne">
-      <button
-        class="accordion-button"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#collapseOne"
-        aria-expanded="true"
-        aria-controls="collapseOne"
-      >
-        ${this.name}
-      </button>
-    </h2>
-    <div
-      id="collapseOne"
-      class="accordion-collapse collapse show"
-      aria-labelledby="headingOne"
-      data-mdb-parent="#accordionExample"
-    >
-      <div class="accordion-body">
-        <p> ${this.content} </p>
-      </div>
-    </div>
+  <div class="card w-75">
+  <div class="card-body pull-left">
+    <h5 class="card-title"style="pull-left">${this.name}</h5>
+    <p> ${this.content} </p>
+    <a href="#" class="card-link">Card link</a>
+    <a href="#" class="card-link">Another link</a>
   </div>
-
+</div>
     `;
     }
 }
