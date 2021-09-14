@@ -1,3 +1,4 @@
+
 class User {
     constructor(id, username, password) {
         this.id = id;

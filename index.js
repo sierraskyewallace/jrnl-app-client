@@ -1,22 +1,18 @@
-let currentUser;
+let currentUser
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     const createEntryForm = document.querySelector('#journal-entry-form');
     createEntryForm.addEventListener("submit", (event) => {
         createFormHandler(event);
     });
-
-
     
     const logoutButton = document.getElementById('logout-button');
     logoutButton.addEventListener('click', (e) => {
         logoutUser(e);
     });
-
-
-        
+ 
     function createFormHandler(e) {
         e.preventDefault()
         const nameInput = document.querySelector('#input-name').value;
@@ -39,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             )
     }
-
+    
     
     const signupForm = document.querySelector('#signup-form');
     signupForm.addEventListener('submit', function (e) {
@@ -52,8 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             body: JSON.stringify({
                 user: {
-                    username: document.querySelector('#signup-username').value,
-                    password: document.querySelector('#signup-password').value
+                    username: document.querySelector("#signup-username").value,
+                    password: document.querySelector("#signup-password").value
                 }
             })
         })
@@ -66,15 +62,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 else {
                     loggedInUser(object)
                 }
-
-                function loggedInUser(obj) {
-                    currentUser = obj
-                    welcome.innerHTML = `Welcome, ${obj.username}.`
+            })
+                
+                    
+                function loggedInUser(object) {
+                    currentUser = object
                     signupForm.style.display = 'none'
+                    welcome.innerHTML = `Welcome, ${currentUser.user.data.attributes.username}.`
                     getEntries();
                 };
-            
-            
+      
+      
 
                 function getEntries() {
                     fetch("http://localhost:3000/api/v1/journal_entries")
@@ -91,4 +89,4 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
     })
-})
+
