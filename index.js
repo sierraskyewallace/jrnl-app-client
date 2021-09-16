@@ -14,13 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
     logoutButton.addEventListener('click', (e) => {
         logoutUser(e);
     });
-  
+
+
 
     function logoutUser(e) {
         e.preventDefault()
         currentUser = null;
         window.location.reload();
-    
     }
 
     function createFormHandler(e) {
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
     }
 
-    
+
     const signupForm = document.querySelector('#signup-form');
     signupForm.addEventListener('submit', function (e) {
         e.preventDefault()
@@ -73,7 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 }
             })
-            
+        
+
         
         function loggedInUser(object) {
             currentUser = object
@@ -84,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
             getEntries();
         };
       
-      
+
+    
 
         function getEntries() {
             fetch("http://localhost:3000/api/v1/journal_entries")
@@ -92,23 +94,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(entries => {
                     console.log(entries);
                     entries.data.forEach(journalEntry => {
-
                         let newEntry = new JournalEntry(journalEntry, journalEntry.attributes);
-
                         document.querySelector('#journal-entries-container').innerHTML += newEntry.renderEntry();
                     })
                 })
-            //const deleteEntryButtons = document.querySelectorAll('.delete-entry-button');
-            function deleteEntry() {
-                e.preventDefault()
-                    const entryId = e.target.getAttribute('data-id');
-                    fetch(`http://localhost:3000/api/v1/journal_entries/${entryId}`, {
-                        method: "DELETE"
-                    })
-                        this.location.reload();
-            };
-   
-            }
         }
-    );
-})
+    });
+
+    // need to figure out how to delete entries
+    const deleteEntryButtons = document.querySelectorAll('.delete-entry-button');
+        for (const button of deleteEntryButtons)
+            button.addEventListener('click', function (e) {
+                e.preventDefault()
+                const id = this.dataset.id;
+                fetch("http://localhost:3000/api/v1/journal_entries/" + id, {
+                    method: "DELETE"
+                })
+                    .then(response => response.json())
+                    .then(function (object) {
+                        console.log(object);
+                        if (object.message) {
+                            alert(object.message)
+                        }
+                        else {
+                            getEntries();
+                        }
+                    })
+            }
+            );
+            
+});
+
+
+
+
+
