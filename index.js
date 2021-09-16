@@ -10,11 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const logoutButton = document.getElementById('logout-button');
+    logoutButton.style.display = 'none';
     logoutButton.addEventListener('click', (e) => {
         logoutUser(e);
     });
-    
-    
+  
+
+    function logoutUser(e) {
+        e.preventDefault()
+        currentUser = null;
+        window.location.reload();
+        
+    }
+
+
     function createFormHandler(e) {
         e.preventDefault()
         const nameInput = document.querySelector('#input-name').value;
@@ -63,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 else {
                     loggedInUser(object)
+
                 }
             })
             
@@ -70,8 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 function loggedInUser(object) {
                     currentUser = object
                     signupForm.style.display = 'none'
-                    createEntryForm.style.display = 'block'
-                    welcome.innerHTML = `Welcome, ${currentUser.data.attributes.username}.`
+                    createEntryForm.style.display = 'inline'
+                    welcome.innerHTML = `Welcome, ${currentUser.data.attributes.username}.`;
+                    logoutButton.style.display = 'inline';
                     getEntries();
                 };
       
