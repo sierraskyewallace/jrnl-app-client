@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.querySelector('#signup-form');
     signupForm.addEventListener('submit', function (e) {
         e.preventDefault()
-        fetch("http://localhost:3000/api/v1/login", {
+        fetch("http://localhost:3000/api/v1/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -65,13 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     loggedInUser(object)
                 }
             })
-     
-                    
+            
+        
                 function loggedInUser(object) {
                     currentUser = object
                     signupForm.style.display = 'none'
                     createEntryForm.style.display = 'block'
-                    welcome.innerHTML = `Welcome, ${currentUser.user.data.attributes.username}.`
+                    welcome.innerHTML = `Welcome, ${currentUser.data.attributes.username}.`
                     getEntries();
                 };
       
