@@ -4,15 +4,17 @@ let currentUser
 document.addEventListener('DOMContentLoaded', () => {
 
     const createEntryForm = document.querySelector('#journal-entry-form');
+    createEntryForm.style.display = 'none';
     createEntryForm.addEventListener("submit", (event) => {
         createFormHandler(event);
     });
-    
+
     const logoutButton = document.getElementById('logout-button');
     logoutButton.addEventListener('click', (e) => {
         logoutUser(e);
     });
- 
+    
+    
     function createFormHandler(e) {
         e.preventDefault()
         const nameInput = document.querySelector('#input-name').value;
@@ -63,11 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     loggedInUser(object)
                 }
             })
-                
+     
                     
                 function loggedInUser(object) {
                     currentUser = object
                     signupForm.style.display = 'none'
+                    createEntryForm.style.display = 'block'
                     welcome.innerHTML = `Welcome, ${currentUser.user.data.attributes.username}.`
                     getEntries();
                 };
