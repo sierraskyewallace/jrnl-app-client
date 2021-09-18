@@ -1,28 +1,32 @@
+// establishes current user if logged in
 let currentUser
 
-
+// loads dom
 document.addEventListener('DOMContentLoaded', () => {
 
+    // form to create entry, hidden if not logged in, when submit, -> form handler
     const createEntryForm = document.querySelector('#journal-entry-form');
     createEntryForm.style.display = 'none';
     createEntryForm.addEventListener("submit", (event) => {
         createFormHandler(event);
     });
 
+
+    // logout button, hidden if not logged in, -> logout user
     const logoutButton = document.getElementById('logout-button');
     logoutButton.style.display = 'none';
     logoutButton.addEventListener('click', (e) => {
         logoutUser(e);
     });
 
-
-
+    // logs out current user and reloads page
     function logoutUser(e) {
         e.preventDefault()
         currentUser = null;
         window.location.reload();
     }
 
+    // takes in entry innput, -> postfetch
     function createFormHandler(e) {
         e.preventDefault()
         const nameInput = document.querySelector('#input-name').value;
@@ -30,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         postFetch(nameInput, contentInput)
     };
 
+    // makes a fetch request to entries, stringifies form data
     function postFetch(name, content) {
         const formData = { name, content }
         fetch('http://localhost:3000/api/v1/journal_entries', {
@@ -37,15 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
         })
+            // establishes new entry object from entry class, renders new entry  from class in entry container
             .then(response => response.json())
             .then(entry => {
-                console.log(entry);
-                let newEntry = new JournalEntry(entry, entry.data.attributes);
+                let newEntry = new JournalEntry(entry, entryAttributes);
                 document.querySelector('#journal-entries-container').innerHTML += newEntry.renderEntry()
             })
     }
 
-
+    // defines signup/in form, fetch req to register(users), post req
     const signupForm = document.querySelector('#signup-form');
     signupForm.addEventListener('submit', function (e) {
         e.preventDefault()
@@ -62,9 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
         })
+            //stringifies input, -> logged in user
             .then(res => res.json())
             .then(function (object) {
-                console.log(object);
                 if (object.message) {
                     alert(object.message)
                 }
@@ -74,8 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
         
-
-        
+        // after login, hides signup form, shows entyry form, welcomes user, shows logout button
+        //renders current users entries
         function loggedInUser(object) {
             currentUser = object
             signupForm.style.display = 'none'
@@ -85,47 +90,16 @@ document.addEventListener('DOMContentLoaded', () => {
             getEntries();
         };
       
-
-    
-
+        // fetch to entries, get request, renders entries for current user in container as objects of class
         function getEntries() {
             fetch("http://localhost:3000/api/v1/journal_entries")
                 .then(response => response.json())
                 .then(entries => {
-                    console.log(entries);
                     entries.data.forEach(journalEntry => {
                         let newEntry = new JournalEntry(journalEntry, journalEntry.attributes);
-                        document.querySelector('#journal-entries-container').innerHTML += newEntry.renderEntry();
+                        document.querySelector('#journal-entries-container').innerHTML += newEntry.renderEntry()
                     })
-                })
+                }) 
         }
     });
-
-    // need to figure out how to delete entries
-    const deleteEntryButtons = document.querySelectorAll('.delete-entry-button');
-        for (const button of deleteEntryButtons)
-            button.addEventListener('click', function (e) {
-                e.preventDefault()
-                const id = this.dataset.id;
-                fetch("http://localhost:3000/api/v1/journal_entries/" + id, {
-                    method: "DELETE"
-                })
-                    .then(response => response.json())
-                    .then(function (object) {
-                        console.log(object);
-                        if (object.message) {
-                            alert(object.message)
-                        }
-                        else {
-                            getEntries();
-                        }
-                    })
-            }
-            );
-            
 });
-
-
-
-
-

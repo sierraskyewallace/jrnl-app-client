@@ -1,29 +1,30 @@
 
-
+//establishes entry as class and defines attributes
 class JournalEntry {
-    constructor(entry, entryAttributes) {
-        this.id = entryAttributes.id;
-        this.name = entryAttributes.name;
-        this.content = entryAttributes.content;
-        this.user_id = entryAttributes.user_id;
-        JournalEntry.all.push(this)
-        console.log(this);
-    }
+  constructor(entry, entryAttributes) {
+    this.id = entryAttributes.id;
+    this.name = entryAttributes.name;
+    this.content = entryAttributes.content;
+    this.user_id = entryAttributes.user_id;
+    JournalEntry.all.push(this)
+    console.log(this);
+  }
 
-
-renderEntry() {
-  return     `
-
-  <div class="card w-75">
-  <div class="card-body pull-left">
-    <h5 class="card-title"style="pull-left">${this.name}</h5>
-    <p> ${this.content} </p>
-   <button class="btn btn-danger"id="delete-entry-button"data-id="${this.id}">Delete</button>
+// renders entry as a card
+  renderEntry() {
+    return `
+  <div data-id="${this.id}" class="entry">
+  <div class="card">
+  <h5> ${this.name} </h5>
+  <p> ${this.content} </p>
   </div>
-</div>
+  </div>
+  <br><br>
 
-    `;
-    }
+
+  `
+  }
 }
 
+//holds entries as an array of cards
 JournalEntry.all = [];
