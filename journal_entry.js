@@ -7,7 +7,6 @@ class JournalEntry {
     this.content = entryAttributes.content;
     this.user_id = entryAttributes.user_id;
     JournalEntry.all.push(this)
-    console.log(this);
   }
 
 // renders entry as a card
@@ -15,8 +14,8 @@ class JournalEntry {
     return `
   <div data-id="${this.id}" class="entry">
   <div class="card">
-  <h5> ${this.name} </h5>
-  <p> ${this.content} </p>
+  <h5> Title: ${this.name} </h5>
+  <p> Content: ${this.content} </p>
   </div>
   </div>
   <br><br>
