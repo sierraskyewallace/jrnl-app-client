@@ -1,7 +1,10 @@
 // establishes current user if logged in
 let currentUser
 
-// loads dom
+
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // form to create entry, hidden if not logged in, when submit, -> form handler
@@ -9,6 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
     createEntryForm.style.display = 'none';
     createEntryForm.addEventListener("submit", (event) => {
         createFormHandler(event);
+    });
+
+    const signUpForm = document.querySelector('#signup-form').style.display = 'none';
+    const signUpButton = document.querySelector('#sign-up-button');
+    signUpButton.addEventListener("click", (event) => {
+        signUpFormHandler(event);
+    });
+
+    const logInForm = document.querySelector('#login-form').style.display = 'none';
+    const logInButton = document.querySelector('#login-button');
+    logInButton.addEventListener("click", (event) => {
+        logInFormHandler(event);
     });
 
 
@@ -51,47 +66,59 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // defines signup/in form, fetch req to register(users), post req
-    const signupForm = document.querySelector('#signup-form');
-    const loginForm = document.querySelector('#signup-form');
-    signupForm.addEventListener('submit', function (e) {
+    function signUpFormHandler(e) {
         e.preventDefault()
-        fetch("http://localhost:3000/api/v1/register", {
+        const signUpForm = document.querySelector('#signup-form').style.display = 'block';
+        const signUpFormData = {
+            username: document.querySelector('#signup-username').value,
+            password: document.querySelector('#signup-password').value
+        }
+        fetch('http://localhost:3000/api/v1/register', {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json"
-            },
-            body: JSON.stringify({
-                user: {
-                    username: document.querySelector("#signup-username").value,
-                    password: document.querySelector("#signup-password").value
-                }
-            })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(signUpFormData)
         })
-            //stringifies input, -> logged in user
-            .then(res => res.json())
-            .then(function (object) {
-                if (object.message) {
-                    alert(object.message)
-                }
-                else {
-                    loggedInUser(object)
-
-                }
+            .then(response => response.json())
+            .then(user => {
+                loggedInUser(user);
             })
-    })
+    }
 
-            
+    // defines log in form, fetch req to login(users), post req 
+    function logInFormHandler(e) {
+        e.preventDefault()
+        const logInForm = document.querySelector('#login-form').style.display = 'block';
+        const logInFormData = {
+            username: document.querySelector('#login-username').value,
+            password: document.querySelector('#login-password').value
+        }
+        fetch('http://localhost:3000/api/v1/login', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(logInFormData)
+        })
+            .then(response => response.json())
+            .then(user => {
+                currentUser = new User(user);
+                loggedInUser();
+            })
+    }
+
+
+
+
+        
+            const userSystem = document.querySelector('#user-system');
 
         
         // after login, hides signup form, shows entyry form, welcomes user, shows logout button
         //renders current users entries
         function loggedInUser(object) {
-            currentUser = object
-            signupForm.style.display = 'none'
+            currentUser = object;
             createEntryForm.style.display = 'inline'
             welcome.innerHTML = `Welcome, ${currentUser.data.attributes.username}.`;
             logoutButton.style.display = 'inline';
+            userSystem.style.display = 'none';
             getEntries();
         };
       
