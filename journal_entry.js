@@ -2,11 +2,12 @@
 //establishes entry as class and defines attributes
 class JournalEntry {
   constructor(entry, entryAttributes) {
-    this.id = entryAttributes.id;
+    this.id = entry.id;
     this.name = entryAttributes.name;
     this.content = entryAttributes.content;
     this.user_id = entryAttributes.user_id;
-    JournalEntry.all.push(this)
+    console.log(this);
+    JournalEntry.all.push(this);
   }
 
 // renders entry as a card

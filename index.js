@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // makes a fetch request to entries, stringifies form data
     function postFetch(name, content) {
-        const formData = { name, content }
+        const formData = { name, content}
         fetch('http://localhost:3000/api/v1/journal_entries', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.querySelector('#signup-form');
     signupForm.addEventListener('submit', function (e) {
         e.preventDefault()
-        fetch("http://localhost:3000/api/v1/register", {
+        fetch("http://localhost:3000/api/v1/users", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -78,28 +78,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 }
             })
+    })
+
         
-        // after login, hides signup form, shows entyry form, welcomes user, shows logout button
-        //renders current users entries
-        function loggedInUser(object) {
-            currentUser = object
-            signupForm.style.display = 'none'
-            createEntryForm.style.display = 'inline'
-            welcome.innerHTML = `Welcome, ${currentUser.data.attributes.username}.`;
-            logoutButton.style.display = 'inline';
-            getEntries();
-        };
+    // after login, hides signup form, shows entyry form, welcomes user, shows logout button
+    //renders current users entries
+    function loggedInUser(object) {
+        currentUser = object
+        signupForm.style.display = 'none'
+        createEntryForm.style.display = 'inline'
+        welcome.innerHTML = `Welcome, ${currentUser.data.attributes.username}.`;
+        logoutButton.style.display = 'inline';
+        getEntries();
+    };
       
-        // fetch to entries, get request, renders entries for current user in container as objects of class
-        function getEntries() {
-            fetch("http://localhost:3000/api/v1/journal_entries")
-                .then(response => response.json())
-                .then(entries => {
-                    entries.data.forEach(journalEntry => {
-                        let newEntry = new JournalEntry(journalEntry, journalEntry.attributes);
-                        document.querySelector('#journal-entries-container').innerHTML += newEntry.renderEntry()
-                    })
-                }) 
-        }
-    });
-});
+    // fetch to entries, get request, renders entries for current user in container as objects of class
+    function getEntries() {
+        fetch('http://localhost:3000/api/v1/journal_entries')
+            .then(response => response.json())
+            .then(entries => {
+                entries.data.forEach(entry => {
+                    let newEntry = new JournalEntry(entry, entry.attributes);
+                    document.querySelector('#journal-entries-container').innerHTML += newEntry.renderEntry()
+                })
+            }
+            );
+    }
+})
