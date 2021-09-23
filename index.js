@@ -4,28 +4,17 @@ let currentUser
 
 
 
-
 document.addEventListener('DOMContentLoaded', () => {
 
+    const logInForm = document.querySelector('#login-form').style.display = 'none';
+    const signUpForm = document.querySelector('#signup-form').style.display = 'none';
+    
     // form to create entry, hidden if not logged in, when submit, -> form handler
     const createEntryForm = document.querySelector('#journal-entry-form');
     createEntryForm.style.display = 'none';
     createEntryForm.addEventListener("submit", (event) => {
         createFormHandler(event);
     });
-
-    const signUpForm = document.querySelector('#signup-form').style.display = 'none';
-    const signUpButton = document.querySelector('#sign-up-button');
-    signUpButton.addEventListener("click", (event) => {
-        signUpFormHandler(event);
-    });
-
-    const logInForm = document.querySelector('#login-form').style.display = 'none';
-    const logInButton = document.querySelector('#login-button');
-    logInButton.addEventListener("click", (event) => {
-        logInFormHandler(event);
-    });
-
 
     // logout button, hidden if not logged in, -> logout user
     const logoutButton = document.getElementById('logout-button');
@@ -65,47 +54,69 @@ document.addEventListener('DOMContentLoaded', () => {
             })
     }
 
-    // defines signup/in form, fetch req to register(users), post req
-    function signUpFormHandler(e) {
+    // button that toggles sign up form
+    const signUpButton = document.getElementById('signup-button');
+    signUpButton.addEventListener('click', (e) => {
         e.preventDefault()
-        const signUpForm = document.querySelector('#signup-form').style.display = 'block';
-        const signUpFormData = {
-            username: document.querySelector('#signup-username').value,
-            password: document.querySelector('#signup-password').value
-        }
+        signUpFormSubmit.style.display = 'block';
+        logInFormSubmit.style.display = 'none';
+    });
+
+    // button that toggles log in form
+    const logInButton = document.getElementById('login-button');
+    logInButton.addEventListener('click', (e) => {
+        e.preventDefault()
+        logInFormSubmit.style.display = 'block';
+        signUpFormSubmit.style.display = 'none';
+    });
+
+    // sign up form submit, -> post fetch
+    const signUpFormSubmit = document.querySelector('#signup-form');
+    signUpFormSubmit.addEventListener('submit', (e) => {
+        e.preventDefault()
+        const usernameInput = document.querySelector('#signup-username').value;
+        const passwordInput = document.querySelector('#signup-password').value;
+        postFetchSignUp(usernameInput, passwordInput)
+    });
+
+    // post fetch for sign up
+    function postFetchSignUp(username, password) {
+        const formData = { username, password }
         fetch('http://localhost:3000/api/v1/register', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(signUpFormData)
+            body: JSON.stringify(formData)
         })
+            // if successful, sets current user to new user, reloads page
             .then(response => response.json())
             .then(user => {
                 loggedInUser(user);
             })
     }
 
-    // defines log in form, fetch req to login(users), post req 
-    function logInFormHandler(e) {
+    // log in form submit, -> post fetch
+    const logInFormSubmit = document.querySelector('#login-form');
+    logInFormSubmit.addEventListener('submit', (e) => {
         e.preventDefault()
-        const logInForm = document.querySelector('#login-form').style.display = 'block';
-        const logInFormData = {
-            username: document.querySelector('#login-username').value,
-            password: document.querySelector('#login-password').value
-        }
+        const usernameInput = document.querySelector('#login-username').value;
+        const passwordInput = document.querySelector('#login-password').value;
+        postFetchLogIn(usernameInput, passwordInput)
+    });
+
+    // post fetch for log in
+    function postFetchLogIn(username, password) {
+        const formData = { username, password }
         fetch('http://localhost:3000/api/v1/login', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(logInFormData)
+            body: JSON.stringify(formData)
         })
+        // if successful, sets current user to new user, reloads page
             .then(response => response.json())
             .then(user => {
-                currentUser = new User(user);
-                loggedInUser();
+                loggedInUser(user);
             })
     }
-
-
-
 
         
             const userSystem = document.querySelector('#user-system');
@@ -113,8 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // after login, hides signup form, shows entyry form, welcomes user, shows logout button
         //renders current users entries
-        function loggedInUser(object) {
-            currentUser = object;
+        function loggedInUser(user) {
+            currentUser = user;
             createEntryForm.style.display = 'inline'
             welcome.innerHTML = `Welcome, ${currentUser.data.attributes.username}.`;
             logoutButton.style.display = 'inline';
