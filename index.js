@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // post fetch for sign up
     function postFetchSignUp(username, password) {
         const formData = { username, password }
-        fetch('http://localhost:3000/api/v1/register', {
+        fetch('http://localhost:3000/api/v1/users', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
